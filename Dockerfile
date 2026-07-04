@@ -63,8 +63,16 @@ WORKDIR /app
 
 COPY infer.py README.md LICENSE ./
 
-RUN groupadd --gid "${GROUP_ID}" unlimited \
-    && useradd --uid "${USER_ID}" --gid "${GROUP_ID}" --create-home --shell /bin/bash unlimited \
+RUN if getent group "${GROUP_ID}" >/dev/null; then \
+        groupmod --new-name unlimited "$(getent group "${GROUP_ID}" | cut -d: -f1)"; \
+    else \
+        groupadd --gid "${GROUP_ID}" unlimited; \
+    fi \
+    && if getent passwd "${USER_ID}" >/dev/null; then \
+        usermod --login unlimited --move-home --home /home/unlimited --gid "${GROUP_ID}" "$(getent passwd "${USER_ID}" | cut -d: -f1)"; \
+    else \
+        useradd --uid "${USER_ID}" --gid "${GROUP_ID}" --create-home --shell /bin/bash unlimited; \
+    fi \
     && mkdir -p /app/log /app/outputs "${HF_HOME}" \
     && chown -R unlimited:unlimited /app /home/unlimited
 
