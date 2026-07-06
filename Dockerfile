@@ -44,11 +44,14 @@ ENV HF_HOME=/home/unlimited/.cache/huggingface \
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         ca-certificates \
+        g++ \
+        gcc \
         git \
         libgl1 \
         libglib2.0-0 \
         libnuma1 \
         python3.12 \
+        python3.12-dev \
         python3.12-venv \
     && rm -rf /var/lib/apt/lists/*
 

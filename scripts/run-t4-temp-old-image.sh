@@ -22,7 +22,7 @@ docker run --rm \
   -v "$PWD/log:/app/log" \
   -v "$PWD/.cache/huggingface:/home/unlimited/.cache/huggingface" \
   "${IMAGE}" \
-  bash -lc "apt-get update && apt-get install -y --no-install-recommends libnuma1 && \
+  bash -lc "apt-get update && apt-get install -y --no-install-recommends gcc g++ python3.12-dev libnuma1 && \
     rm -rf /var/lib/apt/lists/* && \
     python -m pip uninstall -y kernels-data || true && \
     python -m pip install --no-cache-dir --no-deps --force-reinstall 'kernels==0.11.7' && \
