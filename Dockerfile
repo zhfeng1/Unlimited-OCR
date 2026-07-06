@@ -47,6 +47,7 @@ RUN apt-get update \
         git \
         libgl1 \
         libglib2.0-0 \
+        libnuma1 \
         python3.12 \
         python3.12-venv \
     && rm -rf /var/lib/apt/lists/*
