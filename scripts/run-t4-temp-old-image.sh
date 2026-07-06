@@ -26,6 +26,7 @@ docker run --rm \
     rm -rf /var/lib/apt/lists/* && \
     python -m pip uninstall -y kernels-data || true && \
     python -m pip install --no-cache-dir --no-deps --force-reinstall 'kernels==0.11.7' && \
+    python -m pip install --no-cache-dir 'addict==2.4.0' 'matplotlib==3.10.8' && \
     exec python -m sglang.launch_server \
       --model /model \
       --trust-remote-code \

@@ -57,6 +57,8 @@ RUN python3.12 -m venv /opt/venv \
     && python -m pip install --upgrade pip setuptools wheel \
     && python -m pip install --no-index --find-links=/wheelhouse \
         "sglang==0.0.0.dev11416+g92e8bb79e" \
+        "addict==2.4.0" \
+        "matplotlib==3.10.8" \
         "pymupdf==1.27.2.2" \
     && rm -rf /wheelhouse
 
