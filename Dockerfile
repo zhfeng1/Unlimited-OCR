@@ -85,10 +85,11 @@ CMD ["python", "-m", "sglang.launch_server", \
     "--model", "baidu/Unlimited-OCR", \
     "--trust-remote-code", \
     "--served-model-name", "Unlimited-OCR", \
-    "--attention-backend", "fa3", \
+    "--attention-backend", "triton", \
+    "--mm-attention-backend", "triton_attn", \
     "--page-size", "1", \
     "--mem-fraction-static", "0.8", \
-    "--context-length", "32768", \
+    "--context-length", "8192", \
     "--enable-custom-logit-processor", \
     "--disable-overlap-schedule", \
     "--skip-server-warmup", \

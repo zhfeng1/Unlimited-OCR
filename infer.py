@@ -24,12 +24,13 @@ HOST = "0.0.0.0"
 PORT = 10000
 SERVER_TIMEOUT = 300
 PDF_DPI = 300
-ATTENTION_BACKEND = "fa3"
+ATTENTION_BACKEND = os.getenv("SGLANG_ATTENTION_BACKEND", "triton")
+MM_ATTENTION_BACKEND = os.getenv("SGLANG_MM_ATTENTION_BACKEND", "triton_attn")
 PAGE_SIZE = 1
 MEM_FRACTION_STATIC = 0.8
 PROMPT = "document parsing."
 TEMPERATURE = 0
-CONTEXT_LENGTH = 32768
+CONTEXT_LENGTH = int(os.getenv("SGLANG_CONTEXT_LENGTH", "8192"))
 NO_REPEAT_NGRAM_SIZE = 35
 NGRAM_WINDOW = 128
 REQUEST_TIMEOUT = 1200
@@ -101,6 +102,8 @@ def start_server(args):
         SERVED_MODEL_NAME,
         "--attention-backend",
         ATTENTION_BACKEND,
+        "--mm-attention-backend",
+        MM_ATTENTION_BACKEND,
         "--page-size",
         str(PAGE_SIZE),
         "--mem-fraction-static",
