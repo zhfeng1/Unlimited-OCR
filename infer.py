@@ -100,6 +100,8 @@ def start_server(args):
         args.model_dir,
         "--served-model-name",
         SERVED_MODEL_NAME,
+        "--dtype",
+        "float16",
         "--attention-backend",
         ATTENTION_BACKEND,
         "--mm-attention-backend",

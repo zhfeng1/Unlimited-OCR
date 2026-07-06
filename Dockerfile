@@ -110,6 +110,7 @@ CMD ["python", "-m", "sglang.launch_server", \
     "--model", "baidu/Unlimited-OCR", \
     "--trust-remote-code", \
     "--served-model-name", "Unlimited-OCR", \
+    "--dtype", "float16", \
     "--attention-backend", "triton", \
     "--mm-attention-backend", "triton_attn", \
     "--sampling-backend", "pytorch", \

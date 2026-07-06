@@ -57,6 +57,7 @@ exec python -m sglang.launch_server \
   --model /model \
   --trust-remote-code \
   --served-model-name Unlimited-OCR \
+  --dtype float16 \
   --attention-backend triton \
   --mm-attention-backend triton_attn \
   --sampling-backend pytorch \
