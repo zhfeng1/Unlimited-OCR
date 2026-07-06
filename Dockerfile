@@ -39,7 +39,8 @@ ARG GROUP_ID=1000
 
 ENV HF_HOME=/home/unlimited/.cache/huggingface \
     PATH=/opt/venv/bin:$PATH \
-    PYTHONUNBUFFERED=1
+    PYTHONUNBUFFERED=1 \
+    SGLANG_IS_FLASHINFER_AVAILABLE=false
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -64,6 +65,24 @@ RUN python3.12 -m venv /opt/venv \
         "matplotlib==3.10.8" \
         "pymupdf==1.27.2.2" \
     && rm -rf /wheelhouse
+
+RUN python - <<'PY'
+from pathlib import Path
+
+path = Path("/opt/venv/lib/python3.12/site-packages/sglang/srt/layers/layernorm.py")
+text = path.read_text()
+needle = "        if _use_aiter:\n            self._forward_method = self.forward_aiter\n"
+patch = (
+    "        if _is_cuda and torch.cuda.is_available() and torch.cuda.get_device_capability()[0] < 8:\n"
+    "            self._forward_method = self.forward_native\n"
+    "        elif _use_aiter:\n"
+    "            self._forward_method = self.forward_aiter\n"
+)
+if patch not in text:
+    if needle not in text:
+        raise SystemExit("Unable to patch SGLang RMSNorm for sm75")
+    path.write_text(text.replace(needle, patch))
+PY
 
 WORKDIR /app
 
@@ -93,9 +112,11 @@ CMD ["python", "-m", "sglang.launch_server", \
     "--served-model-name", "Unlimited-OCR", \
     "--attention-backend", "triton", \
     "--mm-attention-backend", "triton_attn", \
+    "--sampling-backend", "pytorch", \
     "--page-size", "1", \
     "--mem-fraction-static", "0.8", \
     "--context-length", "8192", \
+    "--disable-cuda-graph", \
     "--enable-custom-logit-processor", \
     "--disable-overlap-schedule", \
     "--skip-server-warmup", \
