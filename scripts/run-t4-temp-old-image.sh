@@ -23,7 +23,7 @@ docker run --rm \
   -v "$PWD/.cache/huggingface:/home/unlimited/.cache/huggingface" \
   "${IMAGE}" \
   bash -lc "python -m pip uninstall -y kernels-data || true && \
-    python -m pip install --no-cache-dir --force-reinstall 'kernels==0.11.7' && \
+    python -m pip install --no-cache-dir --no-deps --force-reinstall 'kernels==0.11.7' && \
     exec python -m sglang.launch_server \
       --model /model \
       --trust-remote-code \
