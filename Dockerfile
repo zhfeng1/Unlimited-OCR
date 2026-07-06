@@ -57,6 +57,7 @@ RUN python3.12 -m venv /opt/venv \
     && python -m pip install --no-index --find-links=/wheelhouse \
         "sglang==0.0.0.dev11416+g92e8bb79e" \
         "pymupdf==1.27.2.2" \
+    && python -m pip uninstall -y kernels kernels-data \
     && rm -rf /wheelhouse
 
 WORKDIR /app
